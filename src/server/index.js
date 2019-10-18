@@ -1,0 +1,89 @@
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import { ApolloServer } from 'apollo-server-express'
+
+import config from '../config'
+import schema from './graphql/schema'
+import { render, login, logout, detectDevice } from './middlewares'
+import getUserByJWT from './getUserByJWT'
+
+const isDev = process.env.NODE_ENV !== 'production'
+
+// Подключение к MongoDB
+mongoose.Promise = global.Promise
+mongoose.connect(config.mongoose.uri, config.mongoose.opts)
+
+const app = express()
+
+const server = new ApolloServer({
+  schema,
+  context: async ({ req }) => {
+    console.log(req.cookies)
+
+    const token = req.cookies.jwt || ''
+    const user = token ? await getUserByJWT(token) : null
+
+    return { user }
+  },
+  debug: isDev,
+  introspection: isDev,
+  playground: isDev,
+})
+
+//
+if (isDev) {
+  const webpackConfig = require('../../webpack.config.js')
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const webpack = require('webpack')
+  const compiler = webpack(webpackConfig)
+
+  app
+    .use(
+      webpackDevMiddleware(compiler, {
+        publicPath: '/public/dist/web',
+        serverSideRender: true,
+        writeToDisk(filePath) {
+          return (
+            /dist\/node\//.test(filePath) || /loadable-stats/.test(filePath)
+          )
+        },
+      }),
+    )
+
+    .use(webpackHotMiddleware(compiler))
+}
+
+app
+  .disable('x-powered-by')
+  .enable('trust proxy')
+
+  // CORS
+  .use(cors(config.cors))
+
+  // Статические файлы
+  .use('/dist', express.static('./public/dist'))
+  .use('/static', express.static('./public'))
+
+  // Парсинг данных запроса
+  .use(cookieParser())
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.json())
+
+server.applyMiddleware({ app, path: '/graphql' })
+
+app
+  // Определение устройства
+  .use(detectDevice)
+
+  // Вход и выход из аккаунта
+  .post('/login', login)
+  .post('/logout', logout)
+
+  // Рендеринг
+  .get('*', render)
+
+  .listen(config.port, () => console.log(`Listen on port ${config.port}!`))
