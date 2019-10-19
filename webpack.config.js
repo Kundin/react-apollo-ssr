@@ -1,25 +1,39 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
+
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const LoadablePlugin = require('@loadable/webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+
+const PostCSSSimpleVars = require('postcss-simple-vars')
+const PostCSSNested = require('postcss-nested')
+const PostCSSPresetEnv = require('postcss-preset-env')
 
 const DIST_PATH = path.resolve(__dirname, 'public/dist')
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
 function getConfig(target) {
-  let isNode = target === 'node'
+  const isNode = target === 'node'
+  const isWeb = target === 'web'
 
   return {
     mode: isProd ? 'production' : 'development',
     target: target,
     name: target,
-    devtool: 'source-map',
-    entry: `./src/client/main-${target}.js`,
+    devtool: isDev && isWeb ? 'source-map' : false,
+    entry: [`./src/client/main-${target}.js`],
+    resolve: {
+      alias: {
+        Pages: path.resolve(__dirname, './src/client/pages'),
+        Components: path.resolve(__dirname, './src/client/components'),
+      },
+    },
     output: {
       path: path.join(DIST_PATH, target),
-      filename: isProd ? '[name]-bundle-[chunkhash:8].js' : '[name].js',
+      filename: isProd ? '[name].[contenthash].js' : '[name].js',
       publicPath: `/dist/${target}/`,
       libraryTarget: isNode ? 'commonjs2' : undefined,
     },
@@ -37,7 +51,35 @@ function getConfig(target) {
         },
         {
           test: /\.css$/,
-          use: [{ loader: MiniCssExtractPlugin.loader }, 'css-loader'],
+          exclude: /node_modules/,
+          use: isWeb
+            ? [
+                {
+                  loader: MiniCssExtractPlugin.loader,
+                  options: {
+                    hmr: isDev,
+                  },
+                },
+                'css-loader',
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    plugins: [
+                      PostCSSSimpleVars(),
+                      PostCSSNested(),
+                      PostCSSPresetEnv({
+                        stage: 0,
+                        features: {
+                          // customProperties: {
+                          //   warnings: false,
+                          // },
+                        },
+                      }),
+                    ],
+                  },
+                },
+              ]
+            : ['css-loader'],
         },
       ],
     },
@@ -52,11 +94,16 @@ function getConfig(target) {
           },
         },
       },
+      minimize: isProd,
+      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+      removeAvailableModules: isProd,
     },
     plugins: [
       new CleanWebpackPlugin(),
       new LoadablePlugin(),
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin({
+        filename: isProd ? '[name].[contenthash].css' : '[name].css',
+      }),
     ],
   }
 }

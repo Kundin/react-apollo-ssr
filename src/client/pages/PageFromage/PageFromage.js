@@ -27,7 +27,7 @@ function PageFromage() {
       <Helmet>
         <title>Fromage</title>
       </Helmet>
-      <div className={baseClass()}>{data.me}</div>
+      <div className={baseClass()}>{data.me.first_name}</div>
     </div>
   )
 }

@@ -6,3 +6,4 @@ public/dist
 
 # Config
 src/config.js
+ecosystem.config.js

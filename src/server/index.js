@@ -21,8 +21,6 @@ const app = express()
 const server = new ApolloServer({
   schema,
   context: async ({ req }) => {
-    console.log(req.cookies)
-
     const token = req.cookies.jwt || ''
     const user = token ? await getUserByJWT(token) : null
 
@@ -64,15 +62,20 @@ app
   // CORS
   .use(cors(config.cors))
 
-  // Статические файлы
-  .use('/dist', express.static('./public/dist'))
-  .use('/static', express.static('./public'))
+// На локальном сервер отдачей файлов занимается NodeJS
+if (config.isLocal) {
+  app
+    .use('/dist', express.static('./public/dist'))
+    .use('/static', express.static('./public'))
+}
 
-  // Парсинг данных запроса
+// Парсинг данных запроса
+app
   .use(cookieParser())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
 
+// Подключение сервера Apollo
 server.applyMiddleware({ app, path: '/graphql' })
 
 app
