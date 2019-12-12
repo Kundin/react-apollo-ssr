@@ -8,7 +8,7 @@ export default new GraphQLObjectType({
       type: GraphQLString,
       description: 'Тестовая мутация',
       args: {},
-      resolve: (rootVal, args, { user }) => {
+      resolve: () => {
         return 'Test is success!'
       },
     },

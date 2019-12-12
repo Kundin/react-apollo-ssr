@@ -1,3 +1,3 @@
-import { App } from './components'
+import { App } from './Components'
 
 export default App

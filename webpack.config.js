@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -6,10 +7,6 @@ const LoadablePlugin = require('@loadable/webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-
-const PostCSSSimpleVars = require('postcss-simple-vars')
-const PostCSSNested = require('postcss-nested')
-const PostCSSPresetEnv = require('postcss-preset-env')
 
 const DIST_PATH = path.resolve(__dirname, 'public/dist')
 const isProd = process.env.NODE_ENV === 'production'
@@ -24,31 +21,30 @@ function getConfig(target) {
     target: target,
     name: target,
     devtool: isDev && isWeb ? 'source-map' : false,
-    entry: [`./src/client/main-${target}.js`],
-    resolve: {
-      alias: {
-        Pages: path.resolve(__dirname, './src/client/pages'),
-        Components: path.resolve(__dirname, './src/client/components'),
-      },
-    },
+    entry: isDev
+      ? [`./src/client/main-${target}.js`, 'webpack-hot-middleware/client']
+      : [`./src/client/main-${target}.js`],
     output: {
       path: path.join(DIST_PATH, target),
-      filename: isProd ? '[name].[contenthash].js' : '[name].js',
+      filename: isProd ? '[name].[hash].js' : '[name].js',
       publicPath: `/dist/${target}/`,
       libraryTarget: isNode ? 'commonjs2' : undefined,
     },
     module: {
       rules: [
+        // JS
         {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              caller: { target: target },
+              caller: { target },
             },
           },
         },
+
+        // CSS
         {
           test: /\.css$/,
           exclude: /node_modules/,
@@ -65,15 +61,13 @@ function getConfig(target) {
                   loader: 'postcss-loader',
                   options: {
                     plugins: [
-                      PostCSSSimpleVars(),
-                      PostCSSNested(),
-                      PostCSSPresetEnv({
-                        stage: 0,
-                        features: {
-                          // customProperties: {
-                          //   warnings: false,
-                          // },
+                      require('postcss-simple-vars'),
+                      require('postcss-nested'),
+                      require('postcss-preset-env')({
+                        autoprefixer: {
+                          flexbox: 'no-2009',
                         },
+                        stage: 3,
                       }),
                     ],
                   },
@@ -88,7 +82,7 @@ function getConfig(target) {
       splitChunks: {
         cacheGroups: {
           vendor: {
-            test: /[\/]node_modules[\/]/,
+            test: /node_modules/,
             name: 'manifest',
             enforce: true,
           },
@@ -99,10 +93,12 @@ function getConfig(target) {
       removeAvailableModules: isProd,
     },
     plugins: [
+      new webpack.HotModuleReplacementPlugin(),
       new CleanWebpackPlugin(),
       new LoadablePlugin(),
       new MiniCssExtractPlugin({
         filename: isProd ? '[name].[contenthash].css' : '[name].css',
+        chunkFilename: isProd ? '[id].[hash].css' : '[id].css',
       }),
     ],
   }

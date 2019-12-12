@@ -11,21 +11,14 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { Helmet } from 'react-helmet'
 import { ChunkExtractor } from '@loadable/server'
 
-import config from '../../../config'
+import { config } from '../../../Config'
 import HtmlDocument from './htmlDocument'
 
-const nodeStats = path.resolve(
-  __dirname,
-  '../../../../public/dist/node/loadable-stats.json',
-)
-
-const webStats = path.resolve(
-  __dirname,
-  '../../../../public/dist/web/loadable-stats.json',
-)
+const nodeStats = path.resolve(__dirname, '../../../../public/dist/node/loadable-stats.json')
+const webStats = path.resolve(__dirname, '../../../../public/dist/web/loadable-stats.json')
 
 async function render(req, res) {
-  const context = {}
+  const routerContext = {}
 
   const client = new ApolloClient({
     ssrMode: true,
@@ -45,7 +38,7 @@ async function render(req, res) {
 
   const components = (
     <ApolloProvider client={client}>
-      <StaticRouter location={req.url} context={context}>
+      <StaticRouter location={req.url} context={routerContext}>
         <App />
       </StaticRouter>
     </ApolloProvider>
@@ -66,7 +59,7 @@ async function render(req, res) {
     webExtractor,
   })
 
-  return res.send(htmlDocument)
+  return res.status(routerContext.status || 200).send(htmlDocument)
 }
 
 export default render

@@ -6,7 +6,7 @@ function isWebpack(caller) {
   return Boolean(caller && caller.name === 'babel-loader')
 }
 
-module.exports = api => {
+module.exports = (api) => {
   const web = api.caller(isWebTarget)
   const webpack = api.caller(isWebpack)
 
@@ -18,11 +18,11 @@ module.exports = api => {
         {
           useBuiltIns: web ? 'entry' : undefined,
           corejs: web ? 'core-js@3' : false,
-          targets: !web ? { node: 'current' } : undefined,
+          targets: web ? undefined : { node: 'current' },
           modules: webpack ? false : 'commonjs',
         },
       ],
     ],
-    plugins: ['@babel/plugin-syntax-dynamic-import', '@loadable/babel-plugin'],
+    plugins: ['@loadable/babel-plugin'],
   }
 }

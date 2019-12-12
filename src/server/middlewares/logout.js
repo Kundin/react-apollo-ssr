@@ -1,6 +1,6 @@
 // Выход из профиля
 
-async function logout(req, res, next) {
+async function logout(req, res) {
   res.clearCookie('jwt')
   res.json({ ok: true })
 }

@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
 
-import config from '../config'
+import { config } from '../Config'
 import schema from './graphql/schema'
 import { render, login, logout, detectDevice } from './middlewares'
 import getUserByJWT from './getUserByJWT'
@@ -33,7 +33,7 @@ const server = new ApolloServer({
 
 //
 if (isDev) {
-  const webpackConfig = require('../../webpack.config.js')
+  const webpackConfig = require('../../webpack.config.js')[0]
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
   const webpack = require('webpack')
@@ -42,17 +42,20 @@ if (isDev) {
   app
     .use(
       webpackDevMiddleware(compiler, {
-        publicPath: '/public/dist/web',
+        noInfo: true,
+        publicPath: webpackConfig.output.publicPath,
         serverSideRender: true,
         writeToDisk(filePath) {
-          return (
-            /dist\/node\//.test(filePath) || /loadable-stats/.test(filePath)
-          )
+          return /dist\/web\//.test(filePath) || /loadable-stats/.test(filePath)
         },
       }),
     )
 
-    .use(webpackHotMiddleware(compiler))
+    .use(
+      webpackHotMiddleware(compiler, {
+        log: false,
+      }),
+    )
 }
 
 app
@@ -64,9 +67,9 @@ app
 
 // На локальном сервер отдачей файлов занимается NodeJS
 if (config.isLocal) {
-  app
-    .use('/dist', express.static('./public/dist'))
-    .use('/static', express.static('./public'))
+  app.use('/dist', express.static('./public/dist'))
+  app.use('/static', express.static('./public'))
+  app.use('/robots.txt', express.static('./public/robots.txt'))
 }
 
 // Парсинг данных запроса

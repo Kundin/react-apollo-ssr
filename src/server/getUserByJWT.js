@@ -2,7 +2,7 @@
 
 import JWT from 'jsonwebtoken'
 
-import config from '../config'
+import config from '../Config'
 import { Users } from './models'
 
 export default async token => {

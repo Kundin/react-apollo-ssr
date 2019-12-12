@@ -1,3 +1,4 @@
 {
-  "ignore": ["public/*"]
+  "verbose": true,
+  "ignore": ["public/*", "src/client/*"]
 }
