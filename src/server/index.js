@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
 
 import { config } from '../Config'
-import schema from './graphql/schema'
+import { schema } from './graphql'
 import { render, login, logout, detectDevice } from './middlewares'
 import getUserByJWT from './getUserByJWT'
 

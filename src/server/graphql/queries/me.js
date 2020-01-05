@@ -1,6 +1,6 @@
-import { UserType } from '../../types'
+import { UserType } from '../types'
 
-export default {
+export const me = {
   type: UserType,
   description: 'Получить текущего пользователя',
   resolve: async (rootVal, args, { user }) => {

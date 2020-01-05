@@ -1,9 +1,9 @@
 import { GraphQLID } from 'graphql'
 
-import { UserType } from '../../types'
-import { Users } from '../../../models'
+import { UserType } from '../types'
+import { Users } from '../../models'
 
-export default {
+export const user = {
   type: UserType,
   description: 'Получить пользователя',
   args: {

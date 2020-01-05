@@ -1,9 +1,9 @@
 import { GraphQLInt, GraphQLString, GraphQLList } from 'graphql'
 
-import { UserType } from '../../types'
-import { Users } from '../../../models'
+import { UserType } from '../types'
+import { Users } from '../../models'
 
-export default {
+export const users = {
   type: new GraphQLList(UserType),
   description: 'Получить список пользователей',
   args: {
