@@ -21,8 +21,8 @@ function getConfig(target) {
     target: target,
     name: target,
     devtool: isDev && isWeb ? 'source-map' : false,
-    entry: isDev
-      ? [`./src/client/main-${target}.js`, 'webpack-hot-middleware/client']
+    entry: isWeb
+      ? ['webpack-hot-middleware/client?reload=true&quiet=true', `./src/client/main-${target}.js`]
       : [`./src/client/main-${target}.js`],
     output: {
       path: path.join(DIST_PATH, target),

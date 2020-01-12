@@ -43,10 +43,10 @@ if (isDev) {
     .use(
       webpackDevMiddleware(compiler, {
         noInfo: true,
-        publicPath: webpackConfig.output.publicPath,
+        publicPath: '/dist/web',
         serverSideRender: true,
         writeToDisk(filePath) {
-          return /dist\/web\//.test(filePath) || /loadable-stats/.test(filePath)
+          return filePath.includes('dist/node/') || filePath.includes('loadable-stats')
         },
       }),
     )
