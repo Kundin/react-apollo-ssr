@@ -30,6 +30,15 @@ function getConfig(target) {
       publicPath: `/dist/${target}/`,
       libraryTarget: isNode ? 'commonjs2' : undefined,
     },
+    resolve: {
+      extensions: ['*', '.js'],
+      alias: {
+        '@Config': path.resolve(__dirname, 'src/Config.js'),
+        '@App': path.resolve(__dirname, 'src/client/App'),
+        '@Components': path.resolve(__dirname, 'src/client/Components'),
+        '@Pages': path.resolve(__dirname, 'src/client/Pages'),
+      },
+    },
     module: {
       rules: [
         // JS

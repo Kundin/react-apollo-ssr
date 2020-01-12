@@ -3,7 +3,7 @@ import loadable from '@loadable/component'
 
 import './App.css'
 
-const PageIndex = loadable(() => import('../Pages/PageIndex'))
+const PageIndex = loadable(() => import('@Pages/PageIndex'))
 
 export const App = () => {
   return (

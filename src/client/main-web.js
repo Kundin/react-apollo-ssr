@@ -7,8 +7,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'
 import { loadableReady } from '@loadable/component'
 
-import { config } from '../Config'
-import { App } from './App'
+import { config } from '@Config'
+import { App } from '@App'
 
 const client = new ApolloClient({
   link: createHttpLink({
