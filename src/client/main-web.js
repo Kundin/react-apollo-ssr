@@ -8,7 +8,7 @@ import { createHttpLink } from 'apollo-link-http'
 import { loadableReady } from '@loadable/component'
 
 import { config } from '../Config'
-import { App } from './Components'
+import { App } from './App'
 
 const client = new ApolloClient({
   link: createHttpLink({
