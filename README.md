@@ -14,7 +14,7 @@
 ## Installation
 
 - `git clone https://github.com/Kundin/react-apollo-ssr.git`
-- cd react-apollo-ssr
-- yarn
-- yarn dev
+- `cd react-apollo-ssr`
+- `npm i`
+- `npm run dev`
 - visit `http://localhost:3000`

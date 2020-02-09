@@ -4,6 +4,4 @@ node_modules
 lib
 public/dist
 
-# Config
-src/config.js
-ecosystem.config.js
+src/Config.js
