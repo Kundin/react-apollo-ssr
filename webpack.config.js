@@ -7,6 +7,8 @@ const LoadablePlugin = require('@loadable/webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const postcssNested = require('postcss-nested')
+const postcssPresetEnv = require('postcss-preset-env')
 
 const DIST_PATH = path.resolve(__dirname, 'public/dist')
 const isProd = process.env.NODE_ENV === 'production'
@@ -38,6 +40,7 @@ function getConfig(target) {
       alias: {
         '@Config': path.resolve(__dirname, 'src/Config.js'),
         '@App': path.resolve(__dirname, 'src/client/App'),
+        '@Themes': path.resolve(__dirname, 'src/client/Themes'),
         '@Components': path.resolve(__dirname, 'src/client/Components'),
         '@Pages': path.resolve(__dirname, 'src/client/Pages'),
       },
@@ -56,7 +59,7 @@ function getConfig(target) {
           },
         },
 
-        // CSS
+        // PostCSS
         {
           test: /\.css$/,
           exclude: /node_modules/,
@@ -68,18 +71,23 @@ function getConfig(target) {
                     hmr: isDev,
                   },
                 },
-                'css-loader',
+                {
+                  loader: 'css-loader',
+                  options: {
+                    importLoaders: 1,
+                  },
+                },
                 {
                   loader: 'postcss-loader',
                   options: {
+                    ident: 'postcss',
                     plugins: [
-                      require('postcss-simple-vars'),
-                      require('postcss-nested'),
-                      require('postcss-preset-env')({
+                      postcssNested(),
+                      postcssPresetEnv({
+                        stage: 1,
                         autoprefixer: {
                           flexbox: 'no-2009',
                         },
-                        stage: 3,
                       }),
                     ],
                   },

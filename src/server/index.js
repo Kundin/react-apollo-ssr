@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { ApolloServer } from 'apollo-server-express'
 
-import { config } from '../Config'
+import { Config } from '../Config'
 import { schema } from './graphql'
 import { render, login, logout, detectDevice } from './middlewares'
 import getUserByJWT from './getUserByJWT'
@@ -14,7 +14,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 // Подключение к MongoDB
 mongoose.Promise = global.Promise
-mongoose.connect(config.mongoose.uri, config.mongoose.opts)
+mongoose.connect(Config.mongoose.uri, Config.mongoose.opts)
 
 const app = express()
 
@@ -33,7 +33,7 @@ const server = new ApolloServer({
 
 //
 if (isDev) {
-  const webpackConfig = require('../../webpack.config.js')[0]
+  const webpackConfig = require('../../webpack.config.js')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
   const webpack = require('webpack')
@@ -63,10 +63,10 @@ app
   .enable('trust proxy')
 
   // CORS
-  .use(cors(config.cors))
+  .use(cors(Config.cors))
 
 // На локальном сервер отдачей файлов занимается NodeJS
-if (config.isLocal) {
+if (Config.isLocal) {
   app.use('/dist', express.static('./public/dist'))
   app.use('/static', express.static('./public'))
   app.use('/robots.txt', express.static('./public/robots.txt'))
@@ -92,4 +92,4 @@ app
   // Рендеринг
   .get('*', render)
 
-  .listen(config.port, () => console.log(`Listen on port ${config.port}!`))
+  .listen(Config.port, () => console.log(`Listen on port ${Config.port}!`))

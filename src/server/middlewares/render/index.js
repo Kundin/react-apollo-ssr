@@ -10,7 +10,7 @@ import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ChunkExtractor } from '@loadable/server'
 
-import { config } from '../../../Config'
+import { Config } from '../../../Config'
 import HtmlDocument from './htmlDocument'
 
 const nodeStats = path.resolve(__dirname, '../../../../public/dist/node/loadable-stats.json')
@@ -23,7 +23,7 @@ async function render(req, res) {
     ssrMode: true,
     link: createHttpLink({
       fetch,
-      uri: config.apollo.uri,
+      uri: Config.apollo.uri,
       credentials: 'same-origin',
       headers: {
         cookie: req.header('Cookie'),

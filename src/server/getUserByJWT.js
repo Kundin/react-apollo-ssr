@@ -2,7 +2,7 @@
 
 import JWT from 'jsonwebtoken'
 
-import config from '../Config'
+import { Config } from '../Config'
 import { Users } from './models'
 
 export default async token => {
@@ -10,7 +10,7 @@ export default async token => {
 
   // Получаем информацию из токена
   try {
-    let { user_id } = JWT.verify(token, config.jwt.secret)
+    let { user_id } = JWT.verify(token, Config.jwt.secret)
     // console.log('USER_ID', user_id)
 
     // Расшариваем информацию о пользователе

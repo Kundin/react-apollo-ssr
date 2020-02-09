@@ -3,7 +3,7 @@
 import JWT from 'jsonwebtoken'
 
 import { Users } from '../models'
-import config from '../../Config'
+import { Config } from '../../Config'
 
 async function login(req, res) {
   let { email, password } = req.body
@@ -34,7 +34,7 @@ async function login(req, res) {
       })
     }
 
-    let jwt = JWT.sign({ user_id: user.id }, config.jwt.secret, config.jwt.options)
+    let jwt = JWT.sign({ user_id: user.id }, Config.jwt.secret, Config.jwt.options)
 
     res.cookie('jwt', jwt)
     res.json({ ok: true, jwt, user })
