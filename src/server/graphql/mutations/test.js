@@ -1,10 +1,12 @@
-import { GraphQLString } from 'graphql'
+import { GraphQLString } from 'graphql';
 
-export const test = {
+const test = {
   type: GraphQLString,
   description: 'Тестовая мутация',
   args: {},
   resolve: () => {
-    return 'Test is success!'
+    return 'Test is success!';
   },
-}
+};
+
+export default test;

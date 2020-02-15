@@ -1,9 +1,9 @@
-import { GraphQLID } from 'graphql'
+import { GraphQLID } from 'graphql';
 
-import { UserType } from '../types'
-import { Users } from '../../models'
+import { UserType } from '../types';
+import { User } from '../../models';
 
-export const user = {
+const user = {
   type: UserType,
   description: 'Получить пользователя',
   args: {
@@ -13,13 +13,18 @@ export const user = {
     },
   },
   resolve: async (obj, args) => {
-    let { id } = args,
-      query = {}
+    const { id } = args;
+    const query = {};
 
-    if (id) query._id = id
+    // eslint-disable-next-line no-underscore-dangle
+    if (id) query._id = id;
 
-    return await Users.findOne(query)
+    const userData = await User.findOne(query)
       .populate('vk')
-      .exec()
+      .exec();
+
+    return userData;
   },
-}
+};
+
+export default user;

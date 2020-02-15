@@ -1,3 +1,3 @@
-import { PageIndex } from './PageIndex'
+import PageIndex from './PageIndex';
 
-export default PageIndex
+export default PageIndex;

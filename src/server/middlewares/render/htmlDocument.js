@@ -1,5 +1,5 @@
 function HtmlDocument({ html, apolloState, helmet, webExtractor }) {
-    return `
+  return `
         <!DOCTYPE html>
         <html ${helmet.htmlAttributes.toString()}>
             <head>
@@ -18,12 +18,12 @@ function HtmlDocument({ html, apolloState, helmet, webExtractor }) {
                     You need to enable JavaScript to run this app.
                 </noscript>
                 <script type="text/javascript">
-                    window.__APOLLO_STATE__=${JSON.stringify(apolloState)}
+                    window.APOLLO_STATE=${JSON.stringify(apolloState)}
                 </script>
                 ${webExtractor.getScriptTags()}
             </body>
         </html>
-    `
+    `;
 }
 
-export default HtmlDocument
+export default HtmlDocument;

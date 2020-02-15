@@ -1,43 +1,44 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import cors from 'cors'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
-import { ApolloServer } from 'apollo-server-express'
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import { ApolloServer } from 'apollo-server-express';
 
-import { Config } from '../Config'
-import { schema } from './graphql'
-import { render, login, logout, detectDevice } from './middlewares'
-import getUserByJWT from './getUserByJWT'
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const isDev = process.env.NODE_ENV !== 'production'
+import Config from '../Config';
+import webpackConfig from '../../webpack.config';
+import schema from './graphql';
+import { render, login, logout, detectDevice } from './middlewares';
+import getUserByJWT from './getUserByJWT';
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 // Подключение к MongoDB
-mongoose.Promise = global.Promise
-mongoose.connect(Config.mongoose.uri, Config.mongoose.opts)
+mongoose.Promise = global.Promise;
+mongoose.connect(Config.mongoose.uri, Config.mongoose.opts);
 
-const app = express()
+const app = express();
 
 const server = new ApolloServer({
   schema,
   context: async ({ req }) => {
-    const token = req.cookies.jwt || ''
-    const user = token ? await getUserByJWT(token) : null
+    const token = req.cookies.jwt || '';
+    const user = token ? await getUserByJWT(token) : null;
 
-    return { user }
+    return { user };
   },
   debug: isDev,
   introspection: isDev,
   playground: isDev,
-})
+});
 
 //
 if (isDev) {
-  const webpackConfig = require('../../webpack.config.js')
-  const webpackDevMiddleware = require('webpack-dev-middleware')
-  const webpackHotMiddleware = require('webpack-hot-middleware')
-  const webpack = require('webpack')
-  const compiler = webpack(webpackConfig)
+  const compiler = webpack(webpackConfig);
 
   app
     .use(
@@ -46,7 +47,7 @@ if (isDev) {
         publicPath: '/dist/web',
         serverSideRender: true,
         writeToDisk(filePath) {
-          return filePath.includes('dist/node/') || filePath.includes('loadable-stats')
+          return filePath.includes('dist/node/') || filePath.includes('loadable-stats');
         },
       }),
     )
@@ -55,7 +56,7 @@ if (isDev) {
       webpackHotMiddleware(compiler, {
         log: false,
       }),
-    )
+    );
 }
 
 app
@@ -63,23 +64,23 @@ app
   .enable('trust proxy')
 
   // CORS
-  .use(cors(Config.cors))
+  .use(cors(Config.cors));
 
 // На локальном сервер отдачей файлов занимается NodeJS
 if (Config.isLocal) {
-  app.use('/dist', express.static('./public/dist'))
-  app.use('/static', express.static('./public'))
-  app.use('/robots.txt', express.static('./public/robots.txt'))
+  app.use('/dist', express.static('./public/dist'));
+  app.use('/static', express.static('./public'));
+  app.use('/robots.txt', express.static('./public/robots.txt'));
 }
 
 // Парсинг данных запроса
 app
   .use(cookieParser())
   .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
+  .use(bodyParser.json());
 
 // Подключение сервера Apollo
-server.applyMiddleware({ app, path: '/graphql' })
+server.applyMiddleware({ app, path: '/graphql' });
 
 app
   // Определение устройства
@@ -92,4 +93,5 @@ app
   // Рендеринг
   .get('*', render)
 
-  .listen(Config.port, () => console.log(`Listen on port ${Config.port}!`))
+  // eslint-disable-next-line no-console
+  .listen(Config.port, () => console.log(`Listen on port ${Config.port}!`));

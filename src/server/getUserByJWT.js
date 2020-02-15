@@ -1,23 +1,23 @@
 // Получить пользователя по JSON Web Token
 
-import JWT from 'jsonwebtoken'
+import JWT from 'jsonwebtoken';
 
-import { Config } from '../Config'
-import { Users } from './models'
+import Config from '../Config';
+import { User } from './models';
 
-export default async token => {
-  let user
+export default async (token) => {
+  let user;
 
   // Получаем информацию из токена
   try {
-    let { user_id } = JWT.verify(token, Config.jwt.secret)
+    const { userId } = JWT.verify(token, Config.jwt.secret);
     // console.log('USER_ID', user_id)
 
     // Расшариваем информацию о пользователе
-    user = await Users.findById(user_id).exec()
+    user = await User.findById(userId).exec();
   } catch (err) {
-    console.log('JWT ERROR', err)
+    // console.log('JWT ERROR', err);
   }
 
-  return user
-}
+  return user;
+};

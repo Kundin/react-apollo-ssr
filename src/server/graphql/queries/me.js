@@ -1,9 +1,11 @@
-import { UserType } from '../types'
+import { UserType } from '../types';
 
-export const me = {
+const me = {
   type: UserType,
   description: 'Получить текущего пользователя',
   resolve: async (rootVal, args, { user }) => {
-    return user
+    return user;
   },
-}
+};
+
+export default me;

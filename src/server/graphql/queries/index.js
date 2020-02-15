@@ -1,3 +1,9 @@
-export * from './me'
-export * from './user'
-export * from './users'
+import me from './me';
+import user from './user';
+import users from './users';
+
+export default {
+  me,
+  user,
+  users,
+};

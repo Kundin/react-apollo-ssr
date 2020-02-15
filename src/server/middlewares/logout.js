@@ -1,8 +1,8 @@
 // Выход из профиля
 
 async function logout(req, res) {
-  res.clearCookie('jwt')
-  res.json({ ok: true })
+  res.clearCookie('jwt');
+  res.json({ ok: true });
 }
 
-export default logout
+export default logout;

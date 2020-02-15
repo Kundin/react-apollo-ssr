@@ -1,7 +1,7 @@
-const isLocal = true
-const port = 3000
+const isLocal = true;
+const port = 3000;
 
-export const Config = {
+const Config = {
   isLocal,
   port,
 
@@ -33,4 +33,6 @@ export const Config = {
   jwt: {
     secret: 'REPLACE_RANDOM_STRING',
   },
-}
+};
+
+export default Config;

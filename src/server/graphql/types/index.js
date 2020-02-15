@@ -1,5 +1,4 @@
-import UserType from './UserType'
-import QueryType from './QueryType'
-import MutationType from './MutationType'
+import UserType from './UserType';
+import MutationType from './MutationType';
 
-export { UserType, QueryType, MutationType }
+export { UserType, MutationType };

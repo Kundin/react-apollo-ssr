@@ -5,7 +5,7 @@ import {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLBoolean,
-} from 'graphql'
+} from 'graphql';
 
 export default new GraphQLObjectType({
   name: 'User',
@@ -54,13 +54,13 @@ export default new GraphQLObjectType({
     createdAt: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'Дата регистрации',
-      resolve: user => user.createdAt.toString(),
+      resolve: (user) => user.createdAt.toString(),
     },
 
     updatedAt: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'Дата последнего обновления',
-      resolve: user => user.updatedAt.toString(),
+      resolve: (user) => user.updatedAt.toString(),
     },
   }),
-})
+});

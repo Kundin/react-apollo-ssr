@@ -1,9 +1,9 @@
-import { GraphQLInt, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLInt, GraphQLString, GraphQLList } from 'graphql';
 
-import { UserType } from '../types'
-import { Users } from '../../models'
+import { UserType } from '../types';
+import { User } from '../../models';
 
-export const users = {
+const users = {
   type: new GraphQLList(UserType),
   description: 'Получить список пользователей',
   args: {
@@ -22,17 +22,22 @@ export const users = {
     },
   },
   resolve: async (obj, args) => {
-    let { id, sex } = args,
-      query = {},
-      limit = 50,
-      skip = args.skip || 0
+    const { id, sex } = args;
+    const query = {};
+    const limit = 50;
+    const skip = args.skip || 0;
 
-    if (id) query._id = id
-    if (sex) query.sex = sex
+    // eslint-disable-next-line no-underscore-dangle
+    if (id) query._id = id;
+    if (sex) query.sex = sex;
 
-    return await Users.find(query)
+    const usersData = await User.find(query)
       .skip(skip)
       .limit(limit)
-      .exec()
+      .exec();
+
+    return usersData;
   },
-}
+};
+
+export default users;

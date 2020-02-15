@@ -1,1 +1,5 @@
-export * from './test'
+import test from './test';
+
+export default {
+  test,
+};

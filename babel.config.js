@@ -1,17 +1,18 @@
 function isWebTarget(caller) {
-  return Boolean(caller && caller.target === 'web')
+  return Boolean(caller && caller.target === 'web');
 }
 
 function isWebpack(caller) {
-  return Boolean(caller && caller.name === 'babel-loader')
+  return Boolean(caller && caller.name === 'babel-loader');
 }
 
 module.exports = (api) => {
-  const web = api.caller(isWebTarget)
-  const webpack = api.caller(isWebpack)
+  const web = api.caller(isWebTarget);
+  const webpack = api.caller(isWebpack);
 
   return {
     presets: [
+      'airbnb',
       '@babel/preset-react',
       [
         '@babel/preset-env',
@@ -24,5 +25,5 @@ module.exports = (api) => {
       ],
     ],
     plugins: ['@loadable/babel-plugin'],
-  }
-}
+  };
+};
