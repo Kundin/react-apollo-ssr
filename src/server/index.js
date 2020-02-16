@@ -1,5 +1,4 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -12,24 +11,15 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import Config from '../Config';
 import webpackConfig from '../../webpack.config';
 import schema from './graphql';
-import { render, login, logout, detectDevice } from './middlewares';
-import getUserByJWT from './getUserByJWT';
+import { render } from './middlewares';
 
 const isDev = process.env.NODE_ENV !== 'production';
-
-// Подключение к MongoDB
-mongoose.Promise = global.Promise;
-mongoose.connect(Config.mongoose.uri, Config.mongoose.opts);
-
 const app = express();
 
 const server = new ApolloServer({
   schema,
-  context: async ({ req }) => {
-    const token = req.cookies.jwt || '';
-    const user = token ? await getUserByJWT(token) : null;
-
-    return { user };
+  context: async () => {
+    return null;
   },
   debug: isDev,
   introspection: isDev,
@@ -83,13 +73,6 @@ app
 server.applyMiddleware({ app, path: '/graphql' });
 
 app
-  // Определение устройства
-  .use(detectDevice)
-
-  // Вход и выход из аккаунта
-  .post('/login', login)
-  .post('/logout', logout)
-
   // Рендеринг
   .get('*', render)
 

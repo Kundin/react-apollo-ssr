@@ -23,12 +23,13 @@ function getConfig(target) {
     target,
     name: target,
     devtool: isDev && isWeb ? 'source-map' : false,
-    entry: isWeb
-      ? [
-          'webpack-hot-middleware/client?name=web&reload=true&quiet=true',
-          './src/client/main-web.jsx',
-        ]
-      : ['./src/client/main-node.js'],
+    entry:
+      isWeb && isDev
+        ? [
+            'webpack-hot-middleware/client?name=web&reload=true&quiet=true',
+            './src/client/main-web.jsx',
+          ]
+        : ['./src/client/main-node.js'],
     output: {
       path: path.join(DIST_PATH, target),
       filename: isProd ? '[name].[hash].js' : '[name].js',

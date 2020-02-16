@@ -1,20 +1,9 @@
 const isLocal = true;
 const port = 3000;
 
-const Config = {
+export default {
   isLocal,
   port,
-
-  // Mongoose
-  mongoose: {
-    uri: 'mongodb://localhost:27017/test',
-    opts: {
-      useNewUrlParser: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-    },
-  },
 
   // Apollo
   apollo: {
@@ -28,11 +17,4 @@ const Config = {
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Cookie', 'Content-Type', 'Authorization'],
   },
-
-  // JSON Web Token
-  jwt: {
-    secret: 'REPLACE_RANDOM_STRING',
-  },
 };
-
-export default Config;

@@ -1,4 +1,2 @@
-import UserType from './UserType';
-import MutationType from './MutationType';
-
-export { UserType, MutationType };
+export { default as Test2Type } from './Test2Type';
+export { default as TestType } from './TestType';

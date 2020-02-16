@@ -1,3 +1,9 @@
-import schema from './schema';
+import { GraphQLSchema } from 'graphql';
 
-export default schema;
+import MutationType from './types/MutationType';
+import QueryType from './types/QueryType';
+
+export default new GraphQLSchema({
+  query: QueryType,
+  mutation: MutationType,
+});
