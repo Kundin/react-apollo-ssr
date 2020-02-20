@@ -46,7 +46,7 @@
     "cross-env": "^7.0.0",
     "express": "4.17.1",
     "express-device": "^0.4.2",
-    "file-loader": "^5.0.2",
+    "file-loader": "^5.1.0",
     "graphql": "^14.6.0",
     "graphql-tag": "2.10.3",
     "ignore-styles": "^5.0.1",
