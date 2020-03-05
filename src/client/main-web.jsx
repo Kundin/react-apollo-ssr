@@ -6,12 +6,11 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { loadableReady } from '@loadable/component';
 
-import Config from '@Config';
 import App from '@App';
 
 const client = new ApolloClient({
   link: createHttpLink({
-    uri: Config.apollo.uri,
+    uri: process.env.APOLLO_SERVER_URI,
     credentials: 'same-origin',
   }),
   cache: new InMemoryCache().restore(window.APOLLO_STATE),

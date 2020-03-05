@@ -1,30 +1,20 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import { ApolloServer } from 'apollo-server-express';
+const dotenv = require('dotenv');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-import Config from '../Config';
-import webpackConfig from '../../webpack.config';
-import schema from './graphql';
-import { render } from './middlewares';
+const webpackConfig = require('../../webpack.config');
+const render = require('./middlewares/render/index');
+
+dotenv.config();
 
 const isDev = process.env.NODE_ENV !== 'production';
+const port = process.env.PORT || 3000;
 const app = express();
-
-const server = new ApolloServer({
-  schema,
-  context: async () => {
-    return null;
-  },
-  debug: isDev,
-  introspection: isDev,
-  playground: isDev,
-});
 
 //
 if (isDev) {
@@ -53,28 +43,16 @@ app
   .disable('x-powered-by')
   .enable('trust proxy')
 
-  // CORS
-  .use(cors(Config.cors));
+  .use('/dist', express.static('./dist'))
+  .use('/static', express.static('./static'))
+  .use('/node_modules', express.static('./node_modules'))
 
-// На локальном сервер отдачей файлов занимается NodeJS
-if (Config.isLocal) {
-  app.use('/dist', express.static('./public/dist'));
-  app.use('/static', express.static('./public'));
-  app.use('/robots.txt', express.static('./public/robots.txt'));
-}
-
-// Парсинг данных запроса
-app
   .use(cookieParser())
   .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json());
+  .use(bodyParser.json())
 
-// Подключение сервера Apollo
-server.applyMiddleware({ app, path: '/graphql' });
-
-app
   // Рендеринг
   .get('*', render)
 
   // eslint-disable-next-line no-console
-  .listen(Config.port, () => console.log(`Listen on port ${Config.port}!`));
+  .listen(port, () => console.log(`Listen on port ${port}!`));

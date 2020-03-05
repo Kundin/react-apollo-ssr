@@ -1,4 +1,4 @@
 {
   "verbose": true,
-  "ignore": [".github", "lib", "public", "src/client"]
+  "ignore": [".github/", "static/", "src/client/", "dist/"]
 }
