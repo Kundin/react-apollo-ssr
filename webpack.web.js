@@ -96,7 +96,17 @@ module.exports = merge(common, {
             ],
       },
       {
-        test: /\.(png|svg|jpg|gif|woff|woff2)$/,
+        test: /\.(png|svg|jpg|gif)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            limit: 8192, // 8 Kb
+          },
+        },
+      },
+      {
+        test: /\.(woff|woff2)$/,
         exclude: /node_modules/,
         use: ['file-loader'],
       },
@@ -110,18 +120,27 @@ module.exports = merge(common, {
       ],
   output: {
     path: path.resolve(__dirname, './dist/web'),
-    filename: isProd ? '[name].[hash].js' : '[name].js',
+    filename: isProd ? '[id].[contenthash].js' : '[name].js',
     publicPath: '/dist/web/',
     libraryTarget: undefined,
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-    'react-router': 'ReactRouter',
-    'react-router-dom': 'ReactRouterDOM',
-  },
   optimization: {
+    minimize: isProd,
     minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    splitChunks: {
+      name: !isProd,
+      cacheGroups: {
+        'react-vendors': {
+          test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom\/esm)[\\/]/,
+          chunks: 'all',
+        },
+
+        'graphql-vendors': {
+          test: /[\\/]node_modules[\\/](apollo-client|@apollo|apollo-utilities\/lib|apollo-link\/lib|graphql|graphql-tag\/src|zen-observable)[\\/]/,
+          chunks: 'all',
+        },
+      },
+    },
   },
   plugins: isProd
     ? [
@@ -130,8 +149,8 @@ module.exports = merge(common, {
         new LoadablePlugin(),
         new MiniCssExtractPlugin({
           ignoreOrder: true,
-          filename: isProd ? '[name].[contenthash].css' : '[name].css',
-          chunkFilename: isProd ? '[id].[hash].css' : '[id].css',
+          filename: '[id].[contenthash].css',
+          chunkFilename: '[id].[hash].css',
         }),
       ]
     : [
@@ -141,8 +160,8 @@ module.exports = merge(common, {
         new LoadablePlugin(),
         new MiniCssExtractPlugin({
           ignoreOrder: true,
-          filename: isProd ? '[name].[contenthash].css' : '[name].css',
-          chunkFilename: isProd ? '[id].[hash].css' : '[id].css',
+          filename: '[name].css',
+          chunkFilename: '[id].css',
         }),
       ],
 });
