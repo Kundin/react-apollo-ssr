@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -42,16 +43,16 @@ if (isDev) {
 app
   .disable('x-powered-by')
   .enable('trust proxy')
+  .use(compression())
 
   .use('/dist', express.static('./dist'))
   .use('/static', express.static('./static'))
-  .use('/node_modules', express.static('./node_modules'))
+  .use('/robots.txt', express.static('./static/robots.txt'))
 
   .use(cookieParser())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
 
-  // Рендеринг
   .get('*', render)
 
   // eslint-disable-next-line no-console
