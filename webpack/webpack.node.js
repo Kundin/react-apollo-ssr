@@ -43,9 +43,9 @@ module.exports = merge(config, {
   },
   entry: ['./src/client/main-node.js'],
   output: {
-    path: path.resolve(__dirname, './dist/node'),
+    path: path.resolve(__dirname, '../dist/node'),
     filename: isProd ? '[name].[hash].js' : '[name].js',
-    publicPath: path.resolve(__dirname, './dist/node/'),
+    publicPath: path.resolve(__dirname, '../dist/node/'),
     libraryTarget: 'commonjs2',
   },
   externals: ['@loadable/component', nodeExternals()],

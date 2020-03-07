@@ -119,7 +119,7 @@ module.exports = merge(common, {
         './src/client/main-web.jsx',
       ],
   output: {
-    path: path.resolve(__dirname, './dist/web'),
+    path: path.resolve(__dirname, '../dist/web'),
     filename: isProd ? '[id].[contenthash].js' : '[name].js',
     publicPath: '/dist/web/',
     libraryTarget: undefined,
