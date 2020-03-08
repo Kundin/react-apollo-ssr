@@ -4,11 +4,7 @@
     "es6": true,
     "node": true
   },
-  "extends": ["airbnb", "prettier"],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
+  "extends": ["airbnb", "airbnb/hooks", "prettier"],
   "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "module",
@@ -26,12 +22,14 @@
     "react": {
       "version": "detect"
     },
-    "import/resolver": "webpack"
+    "import/resolver": {
+      "webpack": {
+        "config": "./webpack/webpack.config.js"
+      }
+    }
   },
-  "plugins": ["react", "prettier", "react-hooks"],
+  "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "prettier/prettier": "error"
   }
 }

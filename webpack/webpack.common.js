@@ -10,7 +10,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
-      '@App': path.resolve(__dirname, '../src/client/App/App.jsx'),
+      '@App': path.resolve(__dirname, '../src/client/App'),
       '@Components': path.resolve(__dirname, '../src/client/Components'),
       '@Themes': path.resolve(__dirname, '../src/client/Themes'),
       '@Pages': path.resolve(__dirname, '../src/client/Pages'),

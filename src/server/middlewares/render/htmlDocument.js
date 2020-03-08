@@ -10,7 +10,7 @@ ${webExtractor.getStyleTags()}
 </head>
 <body ${helmet.bodyAttributes.toString()}>
 <div id="root">${html}</div>
-<script>window.SERVER_STATE=${JSON.stringify(apolloState)}</script>
+<script>window.__APOLLO_STATE__=${JSON.stringify(apolloState)}</script>
 ${webExtractor.getScriptTags()}
 </body>
 </html>`;
