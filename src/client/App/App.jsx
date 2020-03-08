@@ -10,7 +10,7 @@ const PageIndex = loadable(() => import('@Pages/PageIndex'));
 const App = () => {
   return (
     <>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: 'ru' }}>
         <title>React Apollo SSR</title>
         <meta charset='utf-8' />
         <meta name='description' content='React with Apollo GraphQL and Server Side Rendering' />

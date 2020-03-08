@@ -1,6 +1,6 @@
 module.exports = function HtmlDocument({ html, apolloState, helmet, webExtractor }) {
   return `<!DOCTYPE html>
-<html lang="ru" ${helmet.htmlAttributes.toString()}>
+<html ${helmet.htmlAttributes.toString()}>
 <head>
 ${helmet.meta.toString()}
 ${helmet.title.toString()}

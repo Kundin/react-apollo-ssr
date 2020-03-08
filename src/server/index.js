@@ -17,7 +17,6 @@ const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
 const app = express();
 
-//
 if (isDev) {
   const compiler = webpack(webpackConfig);
 
@@ -55,5 +54,4 @@ app
 
   .get('*', render)
 
-  // eslint-disable-next-line no-console
   .listen(port, () => console.log(`Listen on port ${port}!`));
