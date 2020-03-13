@@ -34,7 +34,7 @@
     "@apollo/client": "^3.0.0-beta.40",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@apollo/react-ssr": "^4.0.0-beta.1",
-    "@bem-react/classname": "^1.5.7",
+    "@bem-react/classname": "^1.5.8",
     "@loadable/component": "5.12.0",
     "@loadable/server": "5.12.0",
     "body-parser": "^1.19.0",
