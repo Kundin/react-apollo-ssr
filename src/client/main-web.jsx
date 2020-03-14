@@ -3,6 +3,7 @@ import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { ApolloProvider } from '@apollo/client';
+import { HelmetProvider } from 'react-helmet-async';
 
 import App from '@App';
 import createApolloClient from '../utils/createApolloClient';
@@ -13,7 +14,9 @@ loadableReady(() => {
   hydrate(
     <ApolloProvider client={apolloClient}>
       <BrowserRouter>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </BrowserRouter>
     </ApolloProvider>,
     document.getElementById('root'),
