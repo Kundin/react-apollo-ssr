@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
-import { cn } from '@bem-react/classname';
 
-import './PageIndex.css';
-
-const cnPageIndex = cn('PageIndex');
+import styles from './PageIndex.css';
 
 const PageIndex = () => {
-  return <div className={cnPageIndex()}>React Apollo SSR</div>;
+  return (
+    <div className={styles.page}>
+      <span className={styles.text}>React Apollo SSR</span>
+    </div>
+  );
 };
 
 export default memo(PageIndex);

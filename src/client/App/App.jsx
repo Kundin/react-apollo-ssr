@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import loadable from '@loadable/component';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import '@Themes/ThemeDefault';
 import './App.css';

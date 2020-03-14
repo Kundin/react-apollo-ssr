@@ -49,6 +49,9 @@ module.exports = merge(common, {
               {
                 loader: 'css-loader',
                 options: {
+                  modules: {
+                    localIdentName: '[hash:base64:5]',
+                  },
                   importLoaders: 1,
                 },
               },
@@ -75,6 +78,9 @@ module.exports = merge(common, {
               {
                 loader: 'css-loader',
                 options: {
+                  modules: {
+                    localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                  },
                   importLoaders: 1,
                 },
               },

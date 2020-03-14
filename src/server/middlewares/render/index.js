@@ -4,7 +4,7 @@ const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router');
 const { ApolloProvider } = require('@apollo/client');
 const { getDataFromTree } = require('@apollo/react-ssr');
-const { Helmet } = require('react-helmet');
+const { HelmetProvider } = require('react-helmet-async');
 const { ChunkExtractor } = require('@loadable/server');
 
 const HtmlDocument = require('./htmlDocument');
@@ -15,6 +15,7 @@ const webStats = path.resolve(__dirname, '../../../../dist/web/loadable-stats.js
 
 module.exports = async function render(req, res) {
   const routerContext = {};
+  const helmetContext = {};
   const apolloClient = createApolloClient({ uri: process.env.APOLLO_SERVER_URI });
 
   const nodeExtractor = new ChunkExtractor({ statsFile: nodeStats });
@@ -23,7 +24,11 @@ module.exports = async function render(req, res) {
   const components = createElement(
     ApolloProvider,
     { client: apolloClient },
-    createElement(StaticRouter, { location: req.url, context: routerContext }, createElement(App)),
+    createElement(
+      StaticRouter,
+      { location: req.url, context: routerContext },
+      createElement(HelmetProvider, { context: helmetContext }, createElement(App)),
+    ),
   );
 
   // Redirect
@@ -39,11 +44,10 @@ module.exports = async function render(req, res) {
 
   const apolloState = apolloClient.extract();
   const html = renderToString(jsx);
-  const helmet = Helmet.renderStatic();
   const htmlDocument = HtmlDocument({
     html,
     apolloState,
-    helmet,
+    helmet: helmetContext.helmet,
     webExtractor,
   });
 
