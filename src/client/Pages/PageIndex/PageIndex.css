@@ -1,9 +1,13 @@
-.PageIndex {
-  font-size: 32px;
+.page {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: #000;
-  color: #fff;
+
+  min-height: 100vh;
+
+  background: black;
+}
+
+.text {
+  color: white;
 }
