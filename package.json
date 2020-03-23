@@ -71,7 +71,7 @@
     "@loadable/webpack-plugin": "^5.12.0",
     "@types/react": "^16.9.23",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "8.0.6",
+    "babel-loader": "8.1.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "babel-preset-airbnb": "^4.4.0",
     "clean-webpack-plugin": "^3.0.0",
