@@ -31,7 +31,7 @@
     "lint:css": "stylelint './src/client/**/*.css'"
   },
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.43",
+    "@apollo/client": "^3.0.0-beta.44",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@apollo/react-ssr": "^4.0.0-beta.1",
     "@loadable/component": "5.12.0",
