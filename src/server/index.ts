@@ -53,4 +53,7 @@ app
 
   .get('*', render)
 
-  .listen(port, () => console.log(`Listen on port ${port}!`));
+  .listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Listen on port ${port}!`);
+  });

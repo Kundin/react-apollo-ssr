@@ -44,9 +44,6 @@ export default merge(configCommon, {
           isProd
             ? {
                 loader: MiniCssExtractPlugin.loader,
-                options: {
-                  hmr: !isProd,
-                },
               }
             : {
                 loader: 'style-loader',
@@ -98,7 +95,7 @@ export default merge(configCommon, {
   },
   entry: [
     isDev && 'webpack-hot-middleware/client?name=web&reload=true&quiet=true',
-    path.resolve(__dirname, '../client/main-web.jsx'),
+    path.resolve(__dirname, '../client/browser.tsx'),
   ].filter((p) => !!p),
   output: {
     path: path.resolve(__dirname, '../../dist/web'),

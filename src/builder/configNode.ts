@@ -13,7 +13,6 @@ import configCommon from './configCommon';
 dotenv.config();
 
 const isProd = process.env.NODE_ENV === 'production';
-const isDev = process.env.NODE_ENV === 'development';
 
 export default merge(configCommon, {
   name: 'node',
@@ -40,9 +39,6 @@ export default merge(configCommon, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: !isProd,
-            },
           },
           {
             loader: 'css-loader',
@@ -79,7 +75,7 @@ export default merge(configCommon, {
       },
     ],
   },
-  entry: [path.resolve(__dirname, '../client/main-node.js')],
+  entry: [path.resolve(__dirname, '../client/node.ts')],
   output: {
     path: path.resolve(__dirname, '../../dist/node'),
     filename: isProd ? '[name].[hash].js' : '[name].js',

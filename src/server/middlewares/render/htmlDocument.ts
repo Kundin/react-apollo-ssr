@@ -1,4 +1,4 @@
-export default ({ html, apolloState, helmet, webExtractor }) => {
+export default ({ html, apolloState, helmet, webExtractor }): string => {
   return `<!DOCTYPE html>
     <html ${helmet.htmlAttributes.toString()}>
     <head>

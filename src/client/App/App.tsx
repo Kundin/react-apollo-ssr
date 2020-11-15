@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 import loadable from '@loadable/component';
 import { Helmet } from 'react-helmet-async';
 
@@ -7,12 +7,12 @@ import './App.css';
 
 const PageIndex = loadable(() => import('@Pages/PageIndex'));
 
-const App = () => {
+const App: FC = () => {
   return (
     <>
       <Helmet htmlAttributes={{ lang: 'ru' }}>
         <title>React Apollo SSR</title>
-        <meta charset='utf-8' />
+        <meta charSet='utf-8' />
         <meta name='description' content='React with Apollo GraphQL and Server Side Rendering' />
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
         <link rel='icon' href='/static/favicon.ico' />

@@ -4,7 +4,7 @@ import { onError } from '@apollo/link-error';
 
 const isNode = typeof window === 'undefined';
 
-export default ({ uri }) => {
+const createApolloClient = ({ uri }) => {
   const httpLink = createHttpLink({
     fetch: fetch as any,
     uri,
@@ -14,11 +14,13 @@ export default ({ uri }) => {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.map(({ message, locations, path: errorPath }) =>
+        // eslint-disable-next-line no-console
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${errorPath}`,
         ),
       );
 
+    // eslint-disable-next-line no-console
     if (networkError) console.log(`[Network error]: ${networkError}`);
   });
 
@@ -33,3 +35,5 @@ export default ({ uri }) => {
     cache,
   });
 };
+
+export default createApolloClient;

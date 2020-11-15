@@ -4,18 +4,29 @@
     "es6": true,
     "node": true
   },
-  "extends": ["airbnb", "airbnb/hooks", "prettier"],
-  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
     "sourceType": "module",
     "ecmaVersion": 2020,
     "ecmaFeatures": {
       "jsx": true,
-      "globalReturn": false
+      "globalReturn": false,
+      "restParams": true,
+      "spread": true
     },
     "allowImportExportEverywhere": true,
     "babelOptions": {
-      "configFile": "./babel.config.js"
+      "configFile": "./babel.config.json"
     }
   },
   "settings": {
@@ -24,12 +35,37 @@
     },
     "import/resolver": {
       "webpack": {
-        "config": "./webpack/webpack.config.js"
+        "config": "./src/builder/index.ts"
       }
     }
   },
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "ts": "never",
+        "tsx": "never",
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
+    "prettier/prettier": "error",
+    "no-nested-ternary": "warn",
+    "react/prop-types": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "declaration": "parens",
+        "assignment": "parens",
+        "return": "parens",
+        "arrow": "parens",
+        "condition": "ignore",
+        "logical": "ignore",
+        "prop": "ignore"
+      }
+    ]
   }
 }
