@@ -6,7 +6,7 @@ const isNode = typeof window === 'undefined';
 
 export default ({ uri }) => {
   const httpLink = createHttpLink({
-    fetch,
+    fetch: fetch as any,
     uri,
     credentials: 'same-origin',
   });

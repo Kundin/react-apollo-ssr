@@ -86,7 +86,7 @@ export default merge(configCommon, {
     publicPath: path.resolve(__dirname, '../../dist/node/'),
     libraryTarget: 'commonjs2',
   },
-  externals: ['@loadable/component', nodeExternals({ whitelist: /\.css$/ })],
+  externals: ['@loadable/component', nodeExternals()],
   plugins: [
     new CleanWebpackPlugin(),
     new LoadablePlugin(),

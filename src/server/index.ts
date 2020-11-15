@@ -23,7 +23,6 @@ if (isDev) {
   app
     .use(
       webpackDevMiddleware(compiler, {
-        noInfo: true,
         publicPath: '/dist/web',
         serverSideRender: true,
         writeToDisk(filePath) {

@@ -1,4 +1,4 @@
-import path from 'path';
+import { resolve } from 'path';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router';
@@ -6,14 +6,15 @@ import { ApolloProvider } from '@apollo/client';
 import { getDataFromTree } from '@apollo/react-ssr';
 import { HelmetProvider } from 'react-helmet-async';
 import { ChunkExtractor } from '@loadable/server';
+import { RequestHandler } from 'express';
 
 import HtmlDocument from './htmlDocument';
 import { createApolloClient } from '../../../utils';
 
-const nodeStats = path.resolve(__dirname, '../../../../dist/node/loadable-stats.json');
-const webStats = path.resolve(__dirname, '../../../../dist/web/loadable-stats.json');
+const nodeStats = resolve(__dirname, '../../../../dist/node/loadable-stats.json');
+const webStats = resolve(__dirname, '../../../../dist/web/loadable-stats.json');
 
-export default async function render(req, res) {
+const render: RequestHandler = async (req, res) => {
   const routerContext = { statusCode: 200, url: undefined };
   const helmetContext = { helmet: null };
   const apolloClient = createApolloClient({ uri: process.env.APOLLO_SERVER_URI });
@@ -51,4 +52,6 @@ export default async function render(req, res) {
   });
 
   return res.status(routerContext.statusCode || 200).send(htmlDocument);
-}
+};
+
+export default render;
