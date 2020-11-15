@@ -1,10 +1,10 @@
-const fetch = require('node-fetch');
-const { ApolloClient, ApolloLink, InMemoryCache, createHttpLink } = require('@apollo/client');
-const { onError } = require('@apollo/link-error');
+import fetch from 'node-fetch';
+import { ApolloClient, ApolloLink, InMemoryCache, createHttpLink } from '@apollo/client';
+import { onError } from '@apollo/link-error';
 
 const isNode = typeof window === 'undefined';
 
-module.exports = ({ uri }) => {
+export default ({ uri }) => {
   const httpLink = createHttpLink({
     fetch,
     uri,
@@ -25,7 +25,7 @@ module.exports = ({ uri }) => {
   const cache = new InMemoryCache();
 
   // eslint-disable-next-line no-underscore-dangle
-  if (!isNode) cache.restore(window.__APOLLO_STATE__);
+  if (!isNode) cache.restore((window as any).__APOLLO_STATE__);
 
   return new ApolloClient({
     ssrMode: true,
