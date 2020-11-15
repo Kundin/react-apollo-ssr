@@ -105,7 +105,7 @@ export default merge(configCommon, {
   },
   optimization: {
     minimize: isProd,
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
     splitChunks: {
       name: !isProd,
       cacheGroups: {

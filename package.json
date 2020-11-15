@@ -67,7 +67,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "5.2.0",
     "style-loader": "^2.0.0",
-    "terser-webpack-plugin": "^5.0.3",
+    "terser-webpack-plugin": "^2.3.8",
     "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
