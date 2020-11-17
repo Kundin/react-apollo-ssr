@@ -21,6 +21,12 @@ export default merge(configCommon, {
   module: {
     rules: [
       {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
@@ -54,16 +60,18 @@ export default merge(configCommon, {
           {
             loader: 'postcss-loader',
             options: {
-              ident: 'postcss',
-              plugins: [
-                postcssNested(),
-                postcssPresetEnv({
-                  stage: 1,
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                  },
-                }),
-              ],
+              postcssOptions: {
+                ident: 'postcss',
+                plugins: [
+                  postcssNested(),
+                  postcssPresetEnv({
+                    stage: 1,
+                    autoprefixer: {
+                      flexbox: 'no-2009',
+                    },
+                  }),
+                ],
+              },
             },
           },
         ],
@@ -78,18 +86,18 @@ export default merge(configCommon, {
   entry: [path.resolve(__dirname, '../client/node.ts')],
   output: {
     path: path.resolve(__dirname, '../../dist/node'),
-    filename: isProd ? '[name].[hash].js' : '[name].js',
+    filename: isProd ? '[name].[contenthash].js' : '[name].js',
     publicPath: path.resolve(__dirname, '../../dist/node/'),
     libraryTarget: 'commonjs2',
   },
   externals: ['@loadable/component', nodeExternals()],
   plugins: [
     new CleanWebpackPlugin(),
-    new LoadablePlugin(),
+    // new LoadablePlugin() as any,
     new MiniCssExtractPlugin({
       ignoreOrder: true,
       filename: '[id].[contenthash].css',
-      chunkFilename: '[id].[hash].css',
+      chunkFilename: '[id].[contenthash].css',
     }),
   ],
 });

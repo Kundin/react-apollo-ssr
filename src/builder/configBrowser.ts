@@ -1,6 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import webpack from 'webpack';
+import { HotModuleReplacementPlugin } from 'webpack';
 import merge from 'webpack-merge';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
@@ -24,6 +24,12 @@ export default merge(configCommon, {
   devtool: false,
   module: {
     rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
       {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
@@ -62,16 +68,18 @@ export default merge(configCommon, {
           {
             loader: 'postcss-loader',
             options: {
-              ident: 'postcss',
-              plugins: [
-                postcssNested(),
-                postcssPresetEnv({
-                  stage: 1,
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                  },
-                }),
-              ],
+              postcssOptions: {
+                ident: 'postcss',
+                plugins: [
+                  postcssNested(),
+                  postcssPresetEnv({
+                    stage: 1,
+                    autoprefixer: {
+                      flexbox: 'no-2009',
+                    },
+                  }),
+                ],
+              },
             },
           },
         ],
@@ -79,17 +87,12 @@ export default merge(configCommon, {
       {
         test: /\.(png|svg|jpg|gif)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            limit: 8192, // 8 Kb
-          },
-        },
+        type: 'asset/resource',
       },
       {
         test: /\.(woff|woff2)$/,
         exclude: /node_modules/,
-        use: ['file-loader'],
+        type: 'asset/resource',
       },
     ],
   },
@@ -105,9 +108,8 @@ export default merge(configCommon, {
   },
   optimization: {
     minimize: isProd,
-    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin() as any],
     splitChunks: {
-      name: !isProd,
       cacheGroups: {
         'react-vendors': {
           test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom\/esm)[\\/]/,
@@ -123,9 +125,9 @@ export default merge(configCommon, {
   },
   plugins: [
     new DotenvPlugin(),
-    isDev && new webpack.HotModuleReplacementPlugin(),
+    isDev && new HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
-    new LoadablePlugin(),
+    // new LoadablePlugin() as any,
     isProd &&
       new MiniCssExtractPlugin({
         ignoreOrder: true,
