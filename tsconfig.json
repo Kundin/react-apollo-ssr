@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "outDir": "build",
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "customMatcher": "\\.(c|le|sa|sc)ss$"
+        }
+      }
+    ],
+    "paths": {
+      "@App": ["./client/App"],
+      "@Components": ["./client/Components"],
+      "@Pages/*": ["./client/Pages/*"],
+      "@Themes/*": ["./client/Themes/*"]
+    }
+  },
+  "include": ["src"]
+}

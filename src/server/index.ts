@@ -1,15 +1,15 @@
-const dotenv = require('dotenv');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const compression = require('compression');
+import dotenv from 'dotenv';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import compression from 'compression';
 
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const webpackConfig = require('../../webpack/webpack.config');
-const render = require('./middlewares/render/index');
+import webpackConfig from '../builder';
+import { render } from './middlewares';
 
 dotenv.config();
 
@@ -23,7 +23,6 @@ if (isDev) {
   app
     .use(
       webpackDevMiddleware(compiler, {
-        noInfo: true,
         publicPath: '/dist/web',
         serverSideRender: true,
         writeToDisk(filePath) {
@@ -54,4 +53,7 @@ app
 
   .get('*', render)
 
-  .listen(port, () => console.log(`Listen on port ${port}!`));
+  .listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Listen on port ${port}!`);
+  });

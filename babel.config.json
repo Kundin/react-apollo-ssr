@@ -1,0 +1,4 @@
+{
+  "presets": ["airbnb", "@babel/preset-env", "@babel/preset-typescript"],
+  "plugins": ["@loadable/babel-plugin"]
+}

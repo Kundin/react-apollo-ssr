@@ -1,34 +1,35 @@
-const path = require('path');
-const merge = require('webpack-merge');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const LoadablePlugin = require('@loadable/webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const postcssNested = require('postcss-nested');
-const postcssPresetEnv = require('postcss-preset-env');
-const dotenv = require('dotenv');
+import path from 'path';
+import merge from 'webpack-merge';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import LoadablePlugin from '@loadable/webpack-plugin';
+import nodeExternals from 'webpack-node-externals';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import postcssNested from 'postcss-nested';
+import postcssPresetEnv from 'postcss-preset-env';
+import dotenv from 'dotenv';
 
-const config = require('./webpack.common');
+import configCommon from './configCommon';
 
 dotenv.config();
 
 const isProd = process.env.NODE_ENV === 'production';
 
-module.exports = merge(config, {
+export default merge(configCommon, {
   name: 'node',
   target: 'node',
   devtool: false,
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             cacheDirectory: !isProd,
             cacheCompression: false,
-            caller: { target: 'node' },
+            presets: ['airbnb', '@babel/preset-env', '@babel/preset-typescript'],
+            plugins: ['@loadable/babel-plugin'],
           },
         },
       },
@@ -38,9 +39,6 @@ module.exports = merge(config, {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: !isProd,
-            },
           },
           {
             loader: 'css-loader',
@@ -77,14 +75,14 @@ module.exports = merge(config, {
       },
     ],
   },
-  entry: ['./src/client/main-node.js'],
+  entry: [path.resolve(__dirname, '../client/node.ts')],
   output: {
-    path: path.resolve(__dirname, '../dist/node'),
+    path: path.resolve(__dirname, '../../dist/node'),
     filename: isProd ? '[name].[hash].js' : '[name].js',
-    publicPath: path.resolve(__dirname, '../dist/node/'),
+    publicPath: path.resolve(__dirname, '../../dist/node/'),
     libraryTarget: 'commonjs2',
   },
-  externals: ['@loadable/component', nodeExternals({ whitelist: /\.css$/ })],
+  externals: ['@loadable/component', nodeExternals()],
   plugins: [
     new CleanWebpackPlugin(),
     new LoadablePlugin(),
