@@ -88,7 +88,7 @@
     "@types/loadable__component": "^5.13.1",
     "@types/loadable__server": "^5.12.3",
     "@types/loadable__webpack-plugin": "^5.7.1",
-    "@types/mini-css-extract-plugin": "^1.2.1",
+    "@types/mini-css-extract-plugin": "^1.4.0",
     "@types/node-fetch": "^2.5.7",
     "@types/optimize-css-assets-webpack-plugin": "^5.0.1",
     "@types/postcss-preset-env": "^6.7.0",
