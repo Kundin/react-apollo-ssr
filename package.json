@@ -70,7 +70,7 @@
     "terser-webpack-plugin": "^2.3.8",
     "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
+    "webpack-cli": "^4.6.0",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^5.4.0",
