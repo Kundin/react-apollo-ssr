@@ -51,6 +51,7 @@
         "jsx": "never"
       }
     ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["src/builder/*"] }],
     "prettier/prettier": "error",
     "no-nested-ternary": "warn",
     "react/prop-types": "off",

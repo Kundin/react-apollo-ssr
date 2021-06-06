@@ -1,59 +1,69 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import compression from 'compression';
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-console */
 
+import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import webpackConfig from '../builder';
-import { render } from './middlewares';
+import compilerPromise from './helpers/compilerPromise';
+import nodeConfig from '../builder/configNode';
+import webConfig from '../builder/configBrowser';
+import render from './middlewares/render';
 
-dotenv.config();
-
-const isDev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 3000;
 const app = express();
+const multiCompiler = webpack([nodeConfig, webConfig]);
+const webCompiler = multiCompiler.compilers.find((compiler) => compiler.name === webConfig.name);
+const nodeCompiler = multiCompiler.compilers.find((compiler) => compiler.name === nodeConfig.name);
+const watchOptions = {
+  ignored: /node_modules/,
+  stats: nodeConfig.stats,
+};
+const isDev = process.env.NODE_ENV === 'development';
 
-if (isDev) {
-  const compiler = webpack(webpackConfig);
+const start = async () => {
+  app.use('/dist', express.static('./dist'));
+  app.use('/static', express.static('./static'));
+  app.use('/robots.txt', express.static('./static/robots.txt'));
 
-  app
-    .use(
-      webpackDevMiddleware(compiler, {
-        publicPath: '/dist/web',
+  app.use(express.json({ limit: '5mb' }));
+  app.use(express.urlencoded({ extended: true }));
+  app.use('*', (_req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    next();
+  });
+
+  if (isDev) {
+    app.use(
+      webpackDevMiddleware(webCompiler, {
+        publicPath: '/dist/web/',
         serverSideRender: true,
         writeToDisk(filePath) {
           return filePath.includes('dist/node/') || filePath.includes('loadable-stats');
         },
       }),
-    )
-
-    .use(
-      webpackHotMiddleware(compiler, {
-        log: false,
-      }),
     );
-}
+    app.use(webpackHotMiddleware(webCompiler));
+  }
 
-app
-  .disable('x-powered-by')
-  .enable('trust proxy')
-  .use(compression())
+  app.get('*', render);
 
-  .use('/dist', express.static('./dist'))
-  .use('/static', express.static('./static'))
-  .use('/robots.txt', express.static('./static/robots.txt'))
-
-  .use(cookieParser())
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-
-  .get('*', render)
-
-  .listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Listen on port ${port}!`);
+  app.listen(3000, () => {
+    console.log('App listening on port 3333!');
   });
+
+  nodeCompiler.watch(watchOptions, (err) => {
+    if (err) throw err;
+    console.log('Watch node...');
+  });
+
+  try {
+    await compilerPromise('web', webCompiler);
+    await compilerPromise('node', nodeCompiler);
+  } catch (error) {
+    console.log('Error', error.message);
+  }
+};
+
+start();

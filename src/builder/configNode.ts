@@ -50,9 +50,7 @@ export default merge(configCommon, {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: isProd
-                  ? '[hash:base64:5]'
-                  : '[path][name]__[local]--[hash:base64:5]',
+                localIdentName: '[contenthash:base64:5]',
               },
               importLoaders: 1,
             },
@@ -93,7 +91,7 @@ export default merge(configCommon, {
   externals: ['@loadable/component', nodeExternals()],
   plugins: [
     new CleanWebpackPlugin(),
-    // new LoadablePlugin() as any,
+    new LoadablePlugin() as any,
     new MiniCssExtractPlugin({
       ignoreOrder: true,
       filename: '[id].[contenthash].css',
