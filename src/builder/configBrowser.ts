@@ -1,6 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import webpack from 'webpack';
+import { HotModuleReplacementPlugin } from 'webpack';
 import merge from 'webpack-merge';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
@@ -24,6 +24,12 @@ export default merge(configCommon, {
   devtool: false,
   module: {
     rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
       {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
@@ -52,9 +58,7 @@ export default merge(configCommon, {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: isProd
-                  ? '[hash:base64:5]'
-                  : '[path][name]__[local]--[hash:base64:5]',
+                localIdentName: '[contenthash:base64:5]',
               },
               importLoaders: 1,
             },
@@ -62,16 +66,18 @@ export default merge(configCommon, {
           {
             loader: 'postcss-loader',
             options: {
-              ident: 'postcss',
-              plugins: [
-                postcssNested(),
-                postcssPresetEnv({
-                  stage: 1,
-                  autoprefixer: {
-                    flexbox: 'no-2009',
-                  },
-                }),
-              ],
+              postcssOptions: {
+                ident: 'postcss',
+                plugins: [
+                  postcssNested(),
+                  postcssPresetEnv({
+                    stage: 1,
+                    autoprefixer: {
+                      flexbox: 'no-2009',
+                    },
+                  }),
+                ],
+              },
             },
           },
         ],
@@ -79,24 +85,19 @@ export default merge(configCommon, {
       {
         test: /\.(png|svg|jpg|gif)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            limit: 8192, // 8 Kb
-          },
-        },
+        type: 'asset/resource',
       },
       {
         test: /\.(woff|woff2)$/,
         exclude: /node_modules/,
-        use: ['file-loader'],
+        type: 'asset/resource',
       },
     ],
   },
   entry: [
     isDev && 'webpack-hot-middleware/client?name=web&reload=true&quiet=true',
     path.resolve(__dirname, '../client/browser.tsx'),
-  ].filter((p) => !!p),
+  ].filter(Boolean),
   output: {
     path: path.resolve(__dirname, '../../dist/web'),
     filename: isProd ? '[id].[contenthash].js' : '[name].js',
@@ -105,32 +106,18 @@ export default merge(configCommon, {
   },
   optimization: {
     minimize: isProd,
-    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
-    splitChunks: {
-      name: !isProd,
-      cacheGroups: {
-        'react-vendors': {
-          test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom\/esm)[\\/]/,
-          chunks: 'all',
-        },
-
-        'graphql-vendors': {
-          test: /[\\/]node_modules[\\/](apollo-client|@apollo|apollo-utilities\/lib|apollo-link\/lib|graphql|graphql-tag\/src|zen-observable)[\\/]/,
-          chunks: 'all',
-        },
-      },
-    },
+    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin() as any],
   },
   plugins: [
     new DotenvPlugin(),
-    isDev && new webpack.HotModuleReplacementPlugin(),
+    isDev && new HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
-    new LoadablePlugin(),
+    new LoadablePlugin() as any,
     isProd &&
       new MiniCssExtractPlugin({
         ignoreOrder: true,
         filename: '[name].css',
         chunkFilename: '[id].css',
       }),
-  ].filter((p) => !!p),
+  ].filter(Boolean),
 });

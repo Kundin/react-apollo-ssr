@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import { ApolloClient, ApolloLink, InMemoryCache, createHttpLink } from '@apollo/client';
 import { onError } from '@apollo/link-error';
 
@@ -6,7 +6,7 @@ const isNode = typeof window === 'undefined';
 
 const createApolloClient = ({ uri }) => {
   const httpLink = createHttpLink({
-    fetch: fetch as any,
+    fetch,
     uri,
     credentials: 'same-origin',
   });
