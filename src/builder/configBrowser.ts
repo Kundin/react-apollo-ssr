@@ -5,7 +5,7 @@ import merge from 'webpack-merge';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import postcssNested from 'postcss-nested';
 import postcssPresetEnv from 'postcss-preset-env';
 import DotenvPlugin from 'dotenv-webpack';
@@ -115,7 +115,7 @@ export default merge(configCommon, {
   },
   optimization: {
     minimize: isProd,
-    minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin() as any],
+    minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin()],
   },
   plugins: [
     new DotenvPlugin(),

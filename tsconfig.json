@@ -1,4 +1,8 @@
 {
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "target": "ES5",
@@ -26,7 +30,8 @@
       "@Components": ["./client/Components"],
       "@Pages/*": ["./client/Pages/*"],
       "@Themes/*": ["./client/Themes/*"]
-    }
+    },
+    "typeRoots": ["./src/typings", "node_modules/@types"]
   },
   "include": ["src"]
 }
