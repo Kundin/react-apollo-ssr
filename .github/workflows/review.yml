@@ -1,0 +1,36 @@
+name: Review
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Check code-style
+        run: npm run code-style:check
+        continue-on-error: true
+
+      - name: Lint JavaScript/TypeScript
+        run: npm run lint:js
+        continue-on-error: true
+
+      - name: Lint CSS
+        run: npm run lint:css
+        continue-on-error: true
+
+      - name: Static check code
+        run: npm run type-check

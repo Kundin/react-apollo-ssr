@@ -1,10 +1,20 @@
 import fetch from 'cross-fetch';
-import { ApolloClient, ApolloLink, InMemoryCache, createHttpLink } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  createHttpLink,
+  NormalizedCacheObject,
+} from '@apollo/client';
 import { onError } from '@apollo/link-error';
+
+export interface Params {
+  uri: string;
+}
 
 const isNode = typeof window === 'undefined';
 
-const createApolloClient = ({ uri }) => {
+const createApolloClient = ({ uri }: Params): ApolloClient<NormalizedCacheObject> => {
   const httpLink = createHttpLink({
     fetch,
     uri,
@@ -27,7 +37,7 @@ const createApolloClient = ({ uri }) => {
   const cache = new InMemoryCache();
 
   // eslint-disable-next-line no-underscore-dangle
-  if (!isNode) cache.restore((window as any).__APOLLO_STATE__);
+  if (!isNode) cache.restore(window.__APOLLO_STATE__);
 
   return new ApolloClient({
     ssrMode: true,
