@@ -75,7 +75,7 @@
     "@types/loadable__component": "^5.13.1",
     "@types/loadable__server": "^5.12.3",
     "@types/loadable__webpack-plugin": "^5.7.1",
-    "@types/mini-css-extract-plugin": "^1.2.1",
+    "@types/mini-css-extract-plugin": "^1.4.3",
     "@types/postcss-preset-env": "^6.7.0",
     "@types/react": "^17.0.9",
     "@types/react-dom": "^17.0.6",
