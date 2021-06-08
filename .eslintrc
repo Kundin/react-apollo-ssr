@@ -51,7 +51,16 @@
         "jsx": "never"
       }
     ],
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["src/builder/*"] }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "src/builder/*",
+          "src/server/index.ts",
+          "src/server/helpers/compilerPromise.ts"
+        ]
+      }
+    ],
     "prettier/prettier": "error",
     "no-nested-ternary": "warn",
     "react/jsx-uses-react": "off",

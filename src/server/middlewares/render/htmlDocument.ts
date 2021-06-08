@@ -1,4 +1,14 @@
-export default ({ html, apolloState, helmet, webExtractor }): string => {
+import { ChunkExtractor } from '@loadable/server';
+import { HelmetData } from 'react-helmet-async';
+
+export interface Options {
+  html: string;
+  apolloState: unknown;
+  helmet: HelmetData;
+  webExtractor: ChunkExtractor;
+}
+
+export default ({ html, apolloState, helmet, webExtractor }: Options): string => {
   return `<!DOCTYPE html>
     <html ${helmet.htmlAttributes.toString()}>
     <head>
