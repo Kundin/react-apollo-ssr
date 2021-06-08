@@ -22,15 +22,12 @@ jobs:
 
       - name: Check code-style
         run: npm run code-style:check
-        continue-on-error: true
 
       - name: Lint JavaScript/TypeScript
         run: npm run lint:js
-        continue-on-error: true
 
       - name: Lint CSS
         run: npm run lint:css
-        continue-on-error: true
 
       - name: Static check code
         run: npm run type-check

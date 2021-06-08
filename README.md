@@ -9,7 +9,7 @@
 - Apollo 3 with hooks
 - React Helmet
 - Loadable component
-- SSR hot reload with HMR webpack  
+- SSR hot reload with HMR webpack
 
 ## Installation
 
