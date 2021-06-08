@@ -20,6 +20,7 @@ const watchOptions = {
   stats: nodeConfig.stats,
 };
 const isDev = process.env.NODE_ENV === 'development';
+const port = process.env.PORT || 3000;
 
 const start = async () => {
   app.use('/dist', express.static('./dist'));
@@ -49,8 +50,8 @@ const start = async () => {
 
   app.get('*', render);
 
-  app.listen(3000, () => {
-    console.log('App listening on port 3333!');
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}!`);
   });
 
   nodeCompiler.watch(watchOptions, (err) => {
