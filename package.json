@@ -29,7 +29,8 @@
     "prettier": "prettier --config './.prettierrc' --write './src/**/*.{js,jsx,ts,tsx,css}'",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint './src' --ext '.js, .jsx, .ts, .tsx'",
-    "lint:css": "stylelint './src/client/**/*.css'"
+    "lint:css": "stylelint './src/client/**/*.css'",
+    "prepare": "is-ci || husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
@@ -96,6 +97,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^6.0.0",
+    "is-ci": "^3.0.0",
     "mini-css-extract-plugin": "^1.6.0",
     "nodemon": "^2.0.6",
     "null-loader": "^4.0.1",
@@ -123,5 +126,10 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write",
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
+    "*.css": "stylelint --fix"
+  }
 }
