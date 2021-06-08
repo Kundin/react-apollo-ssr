@@ -7,3 +7,4 @@ build
 stats.json
 
 .env
+.eslintcache
