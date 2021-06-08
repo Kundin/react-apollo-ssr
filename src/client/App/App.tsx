@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import { FC, memo } from 'react';
 import loadable from '@loadable/component';
 import { Helmet } from 'react-helmet-async';
 
