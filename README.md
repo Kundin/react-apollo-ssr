@@ -2,9 +2,9 @@
 
 ## Features
 
-- React 16
+- React 17
 - Babel 7
-- Webpack 4
+- Webpack 5
 - React Router 5
 - Apollo 3 with hooks
 - React Helmet
