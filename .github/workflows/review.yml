@@ -34,3 +34,6 @@ jobs:
 
       - name: Static check code
         run: npm run type-check
+
+      - name: Build the app
+        run: npm run build
