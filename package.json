@@ -36,7 +36,7 @@
     "lint:css:fix": "stylelint **.css --fix",
     "code-style:check": "prettier --check .",
     "code-style:fix": "prettier --write .",
-    "type-check": "eslint --ext '.js, .jsx, .ts, .tsx' ./src/*"
+    "type-check": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
