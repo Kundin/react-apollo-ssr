@@ -83,7 +83,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/terser-webpack-plugin": "^5.0.3",
     "@types/webpack-dev-middleware": "^3.7.2",
-    "@types/webpack-env": "^1.15.3",
+    "@types/webpack-env": "^1.16.0",
     "@types/webpack-hot-middleware": "^2.25.3",
     "@types/webpack-merge": "^5.0.0",
     "@types/webpack-node-externals": "^2.5.0",
