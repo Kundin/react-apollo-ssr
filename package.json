@@ -43,7 +43,7 @@
     "@apollo/link-error": "^2.0.0-beta.3",
     "@apollo/react-ssr": "^4.0.0",
     "@loadable/component": "^5.14.1",
-    "@loadable/server": "^5.14.2",
+    "@loadable/server": "^5.15.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
