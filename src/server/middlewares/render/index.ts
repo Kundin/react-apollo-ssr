@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router';
+import { StaticRouter } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { getDataFromTree } from '@apollo/react-ssr';
 import { HelmetProvider } from 'react-helmet-async';

@@ -1,6 +1,7 @@
 import { FC, memo } from 'react';
-import loadable from '@loadable/component';
 import { Helmet } from 'react-helmet-async';
+import { Switch, Route } from 'react-router-dom';
+import loadable from '@loadable/component';
 
 import '@Themes/ThemeDefault';
 import './App.css';
@@ -18,9 +19,11 @@ const App: FC = () => {
         <link rel='icon' href='/static/favicon.ico' />
       </Helmet>
 
-      <div>
-        <PageIndex />
-      </div>
+      <Switch>
+        <Route exact path='/'>
+          <PageIndex />
+        </Route>
+      </Switch>
     </>
   );
 };
